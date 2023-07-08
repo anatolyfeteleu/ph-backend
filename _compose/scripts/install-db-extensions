@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+# Perform all actions as $POSTGRES_USER
+export PGUSER="$POSTGRES_USER"
+
+# Create the 'template_hstore' template db
+"${psql[@]}" <<- 'EOSQL'
+CREATE DATABASE template_hstore IS_TEMPLATE true;
+EOSQL
+
+# Load PostGIS into both template_database and $POSTGRES_DB
+for DB in template_hstore "$POSTGRES_DB"; do
+    # Load hstore into both template_database and $POSTGRES_DB
+    echo "Loading hstore extensions into $DB"
+    "${psql[@]}" --dbname="$DB" <<-'EOSQL'
+      CREATE EXTENSION IF NOT EXISTS hstore;
+      \c
+EOSQL
+done
+
+# Load hstore into $POSTGRES_DB
+echo "Loading pg_trgm extensions into $DB"
+"${psql[@]}" --dbname="$DB" <<-'EOSQL'
+  CREATE EXTENSION IF NOT EXISTS pg_trgm;
+  \c
+EOSQL

@@ -1,0 +1,54 @@
+version: '3.8'
+
+volumes:
+  db:
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: _compose/db/Dockerfile
+    volumes:
+      - db:/var/lib/postgres/data
+    ports:
+      - '5454:5432'
+    env_file:
+      - _compose/env/db
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - '5672:5672'
+      - '35672:15672'
+  celery-workers:
+    build:
+      context: .
+      dockerfile: _compose/app/Dockerfile
+    env_file:
+      - _compose/env/app
+      - _compose/env/db
+    command: /start-celery-workers
+    volumes:
+      - .:/app/code
+    depends_on:
+      - db
+      - rabbitmq
+  app:
+    command: /start-app
+    build:
+      context: .
+      dockerfile: _compose/app/Dockerfile
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+      - celery-workers
+    volumes:
+      - .:/app/code
+    ports:
+      - '8000:8000'
+    env_file:
+      - _compose/env/app

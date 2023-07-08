@@ -4,13 +4,16 @@ version = "0.1.0"
 description = ""
 authors = ["Anatoly <anatolyfeteleu@gmail.com>"]
 readme = "README.md"
-packages = [{include = "ph_backend"}]
+
+[tool.poetry.group.production.dependencies]
+sentry-sdk = "*"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = "^0.99.1"
-uvicorn = "^0.22.0"
 
+[tool.poetry.group.core.dependencies]
+fastapi = "^0.100.0"
+uvicorn = "^0.22.0"
 
 [build-system]
 requires = ["poetry-core"]

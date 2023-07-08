@@ -1,3 +1,4 @@
+
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -38,7 +39,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit tests / coverage reports
+# Unit test / coverage reports
 htmlcov/
 .tox/
 .nox/
@@ -115,7 +116,11 @@ ENV/
 env.bak/
 venv.bak/
 
-# Rope project2 settings
+# Spider project settings
+.spiderproject
+.spyproject
+
+# Rope project settings
 .ropeproject
 
 # mkdocs documentation
@@ -134,19 +139,10 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-.idea
+
+_dockerfiles
+_files
 media
 
-# Mac files
-.DS_Store
-
-# Docker
-!_compose/env
-_compose/env/app
-_compose/env/db
-
-# Credentials
-/project/credentials/fcm/credentials.json
-
-# VSCode
-.vscode
+# files
+_scripts/

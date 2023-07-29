@@ -15,7 +15,7 @@ ENV PROJECT_PATH=/app/code
 RUN apt update -y
 
 # [installing system packages]
-RUN apt install -y graphviz graphviz-dev gettext binutils libproj-dev gdal-bin
+RUN #apt install -y graphviz graphviz-dev gettext binutils libproj-dev gdal-bin
 
 # [copying scripts]
 COPY $SCRIPTS_PATH/start-app \

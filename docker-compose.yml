@@ -1,7 +1,7 @@
 version: '3.8'
 
 volumes:
-  db:
+  ph-db:
 
 services:
   db:
@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: _compose/db/Dockerfile
     volumes:
-      - db:/var/lib/postgres/data
+      - ph-db:/var/lib/postgres/data
     ports:
       - '5454:5432'
     env_file:
@@ -28,7 +28,6 @@ services:
       context: .
       dockerfile: _compose/app/Dockerfile
     env_file:
-      - _compose/env/app
       - _compose/env/db
     command: /start-celery-workers
     volumes:
@@ -50,5 +49,3 @@ services:
       - .:/app/code
     ports:
       - '8000:8000'
-    env_file:
-      - _compose/env/app

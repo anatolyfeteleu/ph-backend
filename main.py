@@ -1,10 +1,6 @@
-from typing import Union
-
 from fastapi import FastAPI
 
-app = FastAPI()
+from extensions.app import init
 
-
-@app.get("/")
-async def root():
-    return {"Hello": "World"}
+app = FastAPI(title="Paw Hugs")
+init(app)

@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 import aioredis
 
-from project.settings.database import REDIS_URL
+from src.database import REDIS_URL
 
 if TYPE_CHECKING:
     from aioredis import Redis

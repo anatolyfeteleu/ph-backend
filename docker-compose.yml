@@ -27,8 +27,6 @@ services:
     build:
       context: .
       dockerfile: _compose/app/Dockerfile
-    env_file:
-      - _compose/env/db
     command: /start-celery-workers
     volumes:
       - .:/app/code

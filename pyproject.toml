@@ -8,27 +8,23 @@ readme = "README.md"
 [tool.poetry.group.production.dependencies]
 sentry-sdk = "*"
 
-
-[tool.poetry.group.django-utils.dependencies]
+[tool.poetry.group.utils.dependencies]
+pydantic = {extras = ["dotenv"], version = "^2.1.1"}
 pydantic-settings = "^2.0.2"
 
 
-[tool.poetry.group.admin.dependencies]
-fastapi-admin = "^1.0.4"
+[tool.poetry.group.database.dependencies]
+sqlalchemy = {extras = ["sqlalchemy"], version = "^2.0.19" }
+asyncpg = "^0.28.0"
+alembic = "^1.11.1"
+psycopg2 = "^2.9.6"
+greenlet = "^2.0.2"
+aioredis = "^2.0.1"
+
 
 [tool.poetry.dependencies]
 python = "^3.11"
-pydantic = {extras = ["dotenv"], version = "^2.1.1"}
-
-[tool.poetry.group.db.dependencies]
-tortoise-orm = {extras = ["asyncpg"], version = "^0.19.3"}
-aerich = "^0.7.2"
 
 [tool.poetry.group.core.dependencies]
 fastapi = "^0.100.0"
 uvicorn = "^0.22.0"
-
-[tool.aerich]
-tortoise_orm = "project.settings.database.TORTOISE_ORM"
-location = "migrations"
-src_folder = "./."

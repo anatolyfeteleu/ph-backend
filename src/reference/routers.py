@@ -5,7 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.extensions.dependencies import get_async_session
 from src.reference import services
-from src.reference.serializers import CitySerializer, ServiceSerializer
+from src.reference.serializers import (
+    ServiceSerializer, CitySerializer
+)
 
 router = APIRouter()
 

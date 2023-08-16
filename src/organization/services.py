@@ -1,13 +1,15 @@
-from typing import List
+from typing import Sequence
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload, joinedload
 
-from src.organization.models import Organization, Branch, BranchOpeningHours
+from src.organization.models import (
+    Organization, Branch, BranchOpeningHours, BranchService
+)
 
 
-async def get_organizations(session: AsyncSession) -> List[Organization]:
+async def get_organizations(session: AsyncSession) -> Sequence[Organization]:
 
     result = await session.execute(
         select(Organization)
@@ -21,10 +23,11 @@ async def get_organizations(session: AsyncSession) -> List[Organization]:
     return scalars
 
 
-async def get_branches(session: AsyncSession) -> List[Branch]:
+async def get_branches(session: AsyncSession) -> Sequence[Branch]:
 
-    result = await session.execute(
+    query = (
         select(Branch)
+
         .options(
             joinedload(Branch.city),
             joinedload(Branch.organization),
@@ -32,7 +35,13 @@ async def get_branches(session: AsyncSession) -> List[Branch]:
                 joinedload(Branch.opening_hours)
                 .joinedload(BranchOpeningHours.work_day)
             ),
+            (
+                joinedload(Branch.services)
+                .joinedload(BranchService.service)
+            )
         )
+        .order_by(Branch.created)
     )
+    result = await session.execute(query)
     scalars = result.unique().scalars().all()
     return scalars

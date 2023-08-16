@@ -12,7 +12,6 @@ sentry-sdk = "*"
 pydantic = {extras = ["dotenv"], version = "^2.1.1"}
 pydantic-settings = "^2.0.2"
 
-
 [tool.poetry.group.database.dependencies]
 sqlalchemy = {extras = ["sqlalchemy"], version = "^2.0.19" }
 asyncpg = "^0.28.0"
@@ -20,7 +19,8 @@ alembic = "^1.11.1"
 psycopg2 = "^2.9.6"
 greenlet = "^2.0.2"
 aioredis = "^2.0.1"
-
+fastapi-pagination = "^0.12.8"
+sqlakeyset = "^2.0.1691149549"
 
 [tool.poetry.dependencies]
 python = "^3.11"

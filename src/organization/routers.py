@@ -1,11 +1,14 @@
 from typing import List
 
 from fastapi import Depends, APIRouter
+from fastapi_pagination import Page, paginate
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.extensions.dependencies import get_async_session
 from src.organization import services
-from src.organization.serializers import OrganizationSerializer, BranchSerializer
+from src.organization.serializers import (
+    OrganizationShortSerializer, BranchListSerializer
+)
 
 router = APIRouter()
 
@@ -14,7 +17,7 @@ router = APIRouter()
     "/",
     description="List of organizations",
     response_description="Return list of organizations",
-    response_model=List[OrganizationSerializer],
+    response_model=List[OrganizationShortSerializer],
     deprecated=True
 )
 async def get_organizations(session: AsyncSession = Depends(get_async_session)):
@@ -26,8 +29,8 @@ async def get_organizations(session: AsyncSession = Depends(get_async_session)):
     "/branches",
     description="List of organizations branches",
     response_description="Return list of organizations branches",
-    response_model=List[BranchSerializer],
+    response_model=Page[BranchListSerializer],
 )
 async def get_branches(session: AsyncSession = Depends(get_async_session)):
 
-    return await services.get_branches(session)
+    return paginate(await services.get_branches(session))

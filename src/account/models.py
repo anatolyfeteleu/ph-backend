@@ -4,13 +4,13 @@ from sqlalchemy import String, TIMESTAMP, Boolean, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database import Base
+from src.extensions.models import BaseModelMixin
 
 
-class User(Base):
+class User(BaseModelMixin, Base):
 
     __tablename__ = "account_user"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     email: Mapped[str] = mapped_column(
         String, nullable=False,
         info={"verbose_name": "email"}

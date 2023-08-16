@@ -1,3 +1,4 @@
+from datetime import timezone
 from pathlib import Path
 
 from pydantic_settings import BaseSettings
@@ -20,3 +21,5 @@ SETTINGS = Settings(
     _env_file=".env",
     _env_file_encoding="utf-8"
 )
+TZ = timezone.utc
+

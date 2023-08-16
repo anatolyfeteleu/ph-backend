@@ -6,16 +6,16 @@ from sqlalchemy import (
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from src.database import Base
+from src.extensions.models import BaseModelMixin
 
 if TYPE_CHECKING:
-    from src.reference.models import WorkDay, City
+    from src.reference.models import WorkDay, City, Service
 
 
-class Organization(Base):
+class Organization(BaseModelMixin, Base):
 
     __tablename__ = "organization_organization"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     name: Mapped[str] = mapped_column(
         nullable=False,
         info={"verbose_name": "organization name"},
@@ -30,11 +30,10 @@ class Organization(Base):
     )
 
 
-class Branch(Base):
+class Branch(BaseModelMixin, Base):
 
     __tablename__ = "organization_branch"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     organization_id = mapped_column(
         ForeignKey("organization_organization.id"), nullable=False,
         info={"verbose_name": "organization"}
@@ -74,13 +73,15 @@ class Branch(Base):
     opening_hours: Mapped[List["BranchOpeningHours"]] = relationship(
         back_populates="branches"
     )
+    services: Mapped[List["BranchService"]] = relationship(
+        back_populates="branch"
+    )
 
 
-class BranchOpeningHours(Base):
+class BranchOpeningHours(BaseModelMixin, Base):
 
     __tablename__ = "organization_branchopeninghours"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     branch_id: Mapped[int] = mapped_column(
         ForeignKey("organization_branch.id"), nullable=False,
         info={"verbose_name": "branch"}
@@ -117,5 +118,12 @@ class BranchService(Base):
     service_id: Mapped[int] = mapped_column(
         ForeignKey("reference_service.id"), primary_key=True,
         info={"verbose_name": "service"}
+    )
+
+    branch: Mapped["Branch"] = relationship(
+        back_populates="services"
+    )
+    service: Mapped["Service"] = relationship(
+        back_populates="branch_services"
     )
 

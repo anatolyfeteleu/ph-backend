@@ -4,14 +4,14 @@ from sqlalchemy import BigInteger, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database import Base
-from src.organization.models import Branch
+from src.extensions.models import BaseModelMixin
+from src.organization.models import Branch, BranchService, BranchOpeningHours
 
 
-class WorkDay(Base):
+class WorkDay(BaseModelMixin, Base):
 
     __tablename__ = "reference_workday"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     name: Mapped[str] = mapped_column(
         String(11), nullable=False,
         info={"verbose_name": "name"}
@@ -21,16 +21,15 @@ class WorkDay(Base):
         info={"verbose_name": "short name"}
     )
 
-    opening_hours: Mapped["BranchOpeningHours"] = relationship(
+    opening_hours: Mapped[BranchOpeningHours] = relationship(
         back_populates="work_day"
     )
 
 
-class City(Base):
+class City(BaseModelMixin, Base):
 
     __tablename__ = "reference_city"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     name: Mapped[str] = mapped_column(
         String(32), nullable=False,
         info={"verbose_name": "city name"}
@@ -41,12 +40,15 @@ class City(Base):
     )
 
 
-class Service(Base):
+class Service(BaseModelMixin, Base):
 
     __tablename__ = "reference_service"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     name: Mapped[str] = mapped_column(
         String(32),
         info={"verbose_name": "name"}
+    )
+
+    branch_services: Mapped[List["BranchService"]] = relationship(
+        back_populates="service"
     )

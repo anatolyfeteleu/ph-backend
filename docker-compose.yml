@@ -42,7 +42,7 @@ services:
       - db
       - redis
       - rabbitmq
-      - celery-workers
+#      - celery-workers
     volumes:
       - .:/app/code
     ports:
